@@ -1,0 +1,68 @@
+{
+  // 必须的字段
+  "name": "Content Catcher",
+  "version": "0.4",
+  "manifest_version": 2,
+  // 建议提供的字段
+  "description": "Catch the web page document post to any url.",
+  "icons": {
+    "16": "images/icon.png",
+    "48": "images/icon.png",
+    "238": "images/icon.png"
+  },
+  //  "default_locale": "en",
+  // 多选一，或者都不提供
+  //  "browser_action": {
+  "page_action": {
+    "default_icon": "images/icon.png",
+    "default_title": "Content Catcher",
+    "default_popup": "set.html"
+  },
+  //  "page_action": {},
+  //  "theme": {},
+  //  "app": {},
+  // 根据需要提供
+  "background": {
+    "scripts": [
+      "js/jquery.js",
+      "js/background.js"
+    ]
+  },
+  //  "chrome_url_overrides": {},
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*"
+      ],
+      "js": [
+        "js/jquery.js",
+        "js/catch.js"
+      ]
+    }
+  ],
+  //  "content_security_policy": "policyString",
+  //  "file_browser_handlers": [],
+  "homepage_url": "https://github.com/ay86/catchThePage",
+  "incognito": "spanning",
+  //  "intents": {},
+  //  "key": "publicKey",
+  //  "minimum_chrome_version": "versionString",
+  //  "nacl_modules": [],
+  "offline_enabled": true,
+  //  "omnibox": {
+  //    "keyword": "aString"
+  //  },
+  "options_page": "option.html",
+  "permissions": [
+    "http://*/",
+    "tabs",
+    "activeTab",
+    "storage",
+    "background",
+    "notifications"
+  ]
+  //  "plugins": [],
+  //  "requirements": {},
+  //  "update_url": "http://path/to/updateInfo.xml",
+  //  "web_accessible_resources": []
+}
