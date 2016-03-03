@@ -9,26 +9,19 @@ var TAB_ID, COUNT, TOTAL_TIME, SUCCESS_TOTAL;
 var START_FLAG;
 
 chrome.tabs.onSelectionChanged.addListener(function (tabId) {
-	TAB_ID = tabId;
-	checkURL(function () {
-		chrome.pageAction.show(TAB_ID);
-	});
-});
-chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-	TAB_ID = tabs[0].id;
-	checkURL(function () {
-		chrome.pageAction.show(TAB_ID);
+	checkURL(tabId, function () {
+		chrome.pageAction.show(tabId);
 	});
 });
 // 当页面更新后发送消息给content script进行抓取
 chrome.tabs.onUpdated.addListener(function (nTabId, oChange) {
 	if (oChange.status === 'complete') {
-		checkURL(function () {
-			chrome.pageAction.show(TAB_ID);
+		checkURL(nTabId, function () {
+			chrome.pageAction.show(nTabId);
+			if (nTabId == TAB_ID && START_FLAG) {
+				fCatch();
+			}
 		});
-		if (nTabId == TAB_ID && START_FLAG) {
-			fCatch();
-		}
 	}
 });
 chrome.runtime.onMessage.addListener(function (oMessage, oSender, fCb) {
@@ -125,9 +118,8 @@ function notifyMe(sText) {
 	}
 }
 /* 检测当前URL是否采集的URL一致 */
-function checkURL(fCb) {
-	var bIsURL;
-	chrome.tabs.get(TAB_ID, function (oTab) {
+function checkURL(nTabId, fCb) {
+	chrome.tabs.get(nTabId, function (oTab) {
 		var sUrl = oTab.url;
 		var sSetUrl = LOCAL_STORAGE.getItem('CC_targetUrl');
 		sUrl = sUrl.substr(sUrl.indexOf('//') + 2);
@@ -136,6 +128,7 @@ function checkURL(fCb) {
 		sSetUrl = sSetUrl.substr(0, sSetUrl.indexOf('/'));
 		console.log(sSetUrl, sUrl, oTab);
 		if (sUrl === sSetUrl) {
+			// 地址一致的话显示插件图标
 			fCb();
 		}
 	});
