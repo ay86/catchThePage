@@ -10,6 +10,7 @@ function fGetContent(sId, bContinue) {
 	var nId = sId || 0;
 	var sPath = '';
 	var sDetail = '';
+
 	if ($('#productdetail-box1').length) {
 		var $Img = $Div.find('#ctl00_ContentMain_img1');
 		if ($Img.length) {
@@ -50,6 +51,9 @@ function fGetContent(sId, bContinue) {
 			id: nId
 		};
 	}
+	else if ($Div.html().indexOf('Pardon Our Interruption') > -1) {
+		return;
+	}
 	else {
 		oData = {
 			act: 'tick',
@@ -58,7 +62,9 @@ function fGetContent(sId, bContinue) {
 	}
 	chrome.runtime.sendMessage(oData);
 	if (bContinue) {
-		chrome.runtime.sendMessage({catch: true});
+		setTimeout(function () {
+			chrome.runtime.sendMessage({catch: true});
+		}, 100 + Math.random() * 200);
 	}
 
 	//chrome.extension.connect({name: 'send'}).postMessage(oData);
