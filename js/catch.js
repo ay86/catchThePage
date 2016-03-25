@@ -62,16 +62,14 @@ function fGetContent(sId, bContinue) {
 	}
 	chrome.runtime.sendMessage(oData);
 	if (bContinue) {
-		setTimeout(function () {
-			chrome.runtime.sendMessage({catch: true});
-		}, 100 + Math.random() * 200);
+		// 继续下一轮抓取
+		chrome.runtime.sendMessage({catch: true});
 	}
 
 	//chrome.extension.connect({name: 'send'}).postMessage(oData);
 	//chrome.extension.connect({name: 'catch'}).postMessage({success: true});
 }
-//$('script').remove();
-//$('iframe').remove();
+
 chrome.runtime.onMessage.addListener(function (request, sender, callback) {
 	if (request.catch) {
 		fGetContent(request.id, !request.break);

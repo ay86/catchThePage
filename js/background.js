@@ -79,11 +79,18 @@ function fTogglePage() {
 function fCounter() {
 	var nId = LOCAL_STORAGE.getItem('CC_startId');
 	var nTotal = LOCAL_STORAGE.getItem('CC_total');
+	var nDelay = LOCAL_STORAGE.getItem('CC_delay');
+	var nLoop = LOCAL_STORAGE.getItem('CC_loop');
 
 	LOCAL_STORAGE.setItem('CC_startId', ++nId);
 	if (COUNT < nTotal) {
+		// 如果是在一定周期内的次数将延时下一次执行
+		if (COUNT % nLoop !== 0) {
+			nDelay = 0;
+		}
 		COUNT++;
-		fTogglePage();
+		console.log('current:', nDelay, COUNT, nLoop, COUNT % nLoop);
+		setTimeout(fTogglePage, nDelay);
 	}
 	else {
 		START_FLAG = false;
