@@ -34,6 +34,11 @@ $(function () {
 		});
 
 		$('#start').on('click', function () {
+			wLocalSto.setItem('CC_startId', $StartId.val());
+			wLocalSto.setItem('CC_total', $Total.val());
+			wLocalSto.setItem('CC_delay', $Delay.val());
+			wLocalSto.setItem('CC_loop', $Loop.val());
+
 			bg.fStart(nTabId);
 			window.close();
 		});
