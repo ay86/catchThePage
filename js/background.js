@@ -26,7 +26,7 @@ chrome.tabs.onUpdated.addListener(function (nTabId, oChange) {
 });
 chrome.runtime.onMessage.addListener(function (oMessage, oSender, fCb) {
 	if (oMessage.catch) {
-		fCounter();
+		fCounter(true);
 	}
 	else {
 		//console.log(oSender);
@@ -63,15 +63,22 @@ function fStart(nTabId) {
 function fTogglePage() {
 	var nId = LOCAL_STORAGE.getItem('CC_startId');
 	// 每次抓取都根据ID去获取需要查询的关键词
-	// TODO 后期把访问地址也做进配置里
-	$.get(LOCAL_STORAGE.getItem('CC_catchUrl') + nId, function (jRes) {
-		if (jRes !== '--0') {
-			chrome.tabs.update(TAB_ID, {
-				url: LOCAL_STORAGE.getItem('CC_targetUrl') + jRes
-			});
-		}
-		else {
-			fCounter();
+	$.ajax({
+		url: LOCAL_STORAGE.getItem('CC_catchUrl') + nId,
+		success: function (jRes) {
+			if (jRes !== '--0') {
+				chrome.tabs.update(TAB_ID, {
+					url: LOCAL_STORAGE.getItem('CC_targetUrl') + jRes
+				});
+			}
+			else {
+				fCounter();
+			}
+		},
+		error: function () {
+			COUNT--;
+			LOCAL_STORAGE.setItem('CC_startId', LOCAL_STORAGE.getItem('CC_startId') - 1);
+			fSendMessage('无法获取信息，请稍候刷新重试，刷新后将获取的ID为：' + LOCAL_STORAGE.getItem('CC_startId'));
 		}
 	});
 }
@@ -81,11 +88,12 @@ function fCounter() {
 	var nTotal = LOCAL_STORAGE.getItem('CC_total');
 	var nDelay = LOCAL_STORAGE.getItem('CC_delay');
 	var nLoop = LOCAL_STORAGE.getItem('CC_loop');
+	var bAcross = !arguments[0];
 
 	LOCAL_STORAGE.setItem('CC_startId', ++nId);
 	if (COUNT < nTotal) {
 		// 如果是在一定周期内的次数将延时下一次执行
-		if (COUNT % nLoop !== 0) {
+		if (bAcross || COUNT % nLoop !== 0) {
 			nDelay = 0;
 		}
 		COUNT++;
@@ -101,6 +109,7 @@ function fCounter() {
 /* 获取当前页面数据 */
 function fCatch(bBreak) {
 	var nId = LOCAL_STORAGE.getItem('CC_startId');
+	fSendMessage('time: ' + COUNT);
 	fSendMessage('id: ' + nId);
 	fSendMessage({console: false, catch: true, id: nId, break: bBreak});
 }
