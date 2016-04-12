@@ -52,6 +52,8 @@ function fGetContent(sId, bContinue) {
 		};
 	}
 	else if ($Div.html().indexOf('Pardon Our Interruption') > -1) {
+		console.warn(new Date());
+		chrome.runtime.sendMessage({robot: true});
 		return;
 	}
 	else {
@@ -73,6 +75,10 @@ function fGetContent(sId, bContinue) {
 chrome.runtime.onMessage.addListener(function (request, sender, callback) {
 	if (request.catch) {
 		fGetContent(request.id, !request.break);
+	}
+	else if (request.retry) {
+		window.location.reload();
+		return;
 	}
 	if (typeof request !== 'object' || request.console) {
 		delete request.console;

@@ -7,6 +7,7 @@
 var LOCAL_STORAGE = window.localStorage;
 var TAB_ID, COUNT, TOTAL_TIME, SUCCESS_TOTAL;
 var START_FLAG;
+var ROBOT_TIME, ROBOT_RESET, RETRY_TIMER;
 
 chrome.tabs.onSelectionChanged.addListener(function (tabId) {
 	checkURL(tabId, function () {
@@ -19,6 +20,11 @@ chrome.tabs.onUpdated.addListener(function (nTabId, oChange) {
 		checkURL(nTabId, function () {
 			chrome.pageAction.show(nTabId);
 			if (nTabId == TAB_ID && START_FLAG) {
+				if (ROBOT_RESET) {
+					ROBOT_TIME = new Date();
+					ROBOT_RESET = false;
+					clearTimeout(RETRY_TIMER);
+				}
 				fCatch();
 			}
 		});
@@ -27,6 +33,16 @@ chrome.tabs.onUpdated.addListener(function (nTabId, oChange) {
 chrome.runtime.onMessage.addListener(function (oMessage, oSender, fCb) {
 	if (oMessage.catch) {
 		fCounter(true);
+	}
+	else if (oMessage.robot) {
+		var nRetry = LOCAL_STORAGE.getItem('CC_retry');
+		fSendMessage('robot time: ' + (new Date() - ROBOT_TIME));
+		ROBOT_RESET = true;
+		if (nRetry > 0) {
+			RETRY_TIMER = setTimeout(function () {
+				fSendMessage({retry: true});
+			}, nRetry * 1000 * 60);
+		}
 	}
 	else {
 		//console.log(oSender);
@@ -57,6 +73,7 @@ function fStart(nTabId) {
 	TOTAL_TIME = new Date();
 	SUCCESS_TOTAL = 0;
 	START_FLAG = true;
+	ROBOT_TIME = new Date();
 	fTogglePage();
 }
 /* 切换页面 */
@@ -109,7 +126,7 @@ function fCounter() {
 /* 获取当前页面数据 */
 function fCatch(bBreak) {
 	var nId = LOCAL_STORAGE.getItem('CC_startId');
-	fSendMessage('time: ' + COUNT);
+	fSendMessage('tally: ' + COUNT);
 	fSendMessage('id: ' + nId);
 	fSendMessage({console: false, catch: true, id: nId, break: bBreak});
 }

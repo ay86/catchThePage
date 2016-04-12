@@ -1,7 +1,7 @@
 {
   // 必须的字段
   "name": "Content Catcher",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "manifest_version": 2,
   // 建议提供的字段
   "description": "Catch the web page document post to any url.",
