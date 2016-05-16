@@ -66,6 +66,7 @@ $(function () {
 		});
 
 		$('#catch').on('click', function () {
+			bg.fInit(nTabId);
 			bg.fCatch(true);
 			window.close();
 		});

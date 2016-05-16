@@ -66,14 +66,18 @@ chrome.runtime.onMessage.addListener(function (oMessage, oSender, fCb) {
 	}
 });
 
-/* 开始 */
-function fStart(nTabId) {
+/* 初始化 */
+function fInit(nTabId){
 	TAB_ID = nTabId;
 	COUNT = 1;
 	TOTAL_TIME = new Date();
 	SUCCESS_TOTAL = 0;
-	START_FLAG = true;
 	ROBOT_TIME = new Date();
+}
+/* 开始 */
+function fStart(nTabId) {
+	START_FLAG = true;
+	fInit(nTabId);
 	fTogglePage();
 }
 /* 切换页面 */
