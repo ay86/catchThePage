@@ -3,79 +3,36 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Setting</title>
-	<link rel="stylesheet" href="css/pure-min.css">
+	<link rel="stylesheet" href="http://static.omooer.com/saui/css/sa.min.css">
 	<style type="text/css">
-		body.pure-g {
-			padding: 10px 0;
-			font-family: "黑体", "微软雅黑";
-			letter-spacing: normal;
-			font-size: 14px;
-			width: 500px;
-		}
-
-		label {
-			text-align: right;
-		}
-
-		.button-success {
-			background: rgb(28, 184, 65);
-			color: white;
-			border-radius: 4px;
-			text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-		}
-
-		.button-secondary {
-			background: rgb(66, 184, 221);
-			color: white;
-			border-radius: 4px;
-			text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-		}
-
-		.pure-form div {
-			margin-bottom: 10px;
-		}
-
-		.text-center {
-			text-align: center;
-		}
-
-		.has-error {
-			border-color: #c30 !important;
+		body {
+			padding: 1.5em 0;
+			width: 460px;
 		}
 	</style>
 </head>
-<body class="pure-g">
-<form class="pure-form pure-u-1">
-	<fieldset>
-		<label for="startId" class="pure-u-1-4">当前ID</label>
-		<div class="form-item pure-u-1-2">
-			<input id="startId" type="number" class="pure-input-1" placeholder="1">
+<body>
+<div class="grid">
+	<form name="setting" class="form form-stacked col-10 col-offset-1">
+		<div class="form-group">
+			<label>远程任务地址</label>
+			<input type="url" id="remoteUrl" placeholder="输入远程任务地址" class="form-control">
 		</div>
-		<label for="total" class="pure-u-1-4">持续次数</label>
-		<div class="form-item pure-u-1-2">
-			<input id="total" type="number" class="pure-input-1" placeholder="200">
+		<p class="text-info"><i class="sa-icon sa-icon-exclamation-circle"></i> 远程任务地址为空时执行任务将只对当前页面单次生效</p>
+		<div class="form-group">
+			<label>任务中断等待时间（分）</label>
+			<input type="number" id="retryTime" placeholder="" class="col-2">
 		</div>
-		<!--<label for="loop" class="pure-u-1-4">每间隔</label>-->
-		<!--<div class="pure-u-1-8">-->
-			<!--<input id="loop" type="number" class="pure-input-1" placeholder="10">-->
-		<!--</div>-->
-		<!--<label for="delay" class="pure-u-1-8">次，延时</label>-->
-		<!--<div class="pure-u-1-8">-->
-			<!--<input id="delay" type="number" class="pure-input-1" placeholder="1000">-->
-		<!--</div>-->
-		<!--<label class="pure-u-1-8" style="text-align: left;">毫秒</label>-->
-		<label class="pure-u-1-4">每次中断后等待</label>
-		<div class="form-item pure-u-1-6">
-			<input id="retry" type="number" class="pure-input-1" placeholder="10">
+		<div class="form-group">
+			<label>数据提交地址</label>
+			<input type="url" id="submitUrl" placeholder="输入数据提交地址，不能为空" class="form-control">
 		</div>
-		<label class="pure-u-1-6">分钟后重试</label>
-		<div class="text-center">
-			<button type="button" id="start" class="pure-input-1-3 pure-button button-success">开始</button>
-			<button type="button" id="catch" class="pure-input-1-3 pure-button button-secondary">单个抓取</button>
-		</div>
-	</fieldset>
-</form>
-<script src="js/jquery.js"></script>
+		<p id="taskInfo" class="text-success hidden">任务接收完毕，当前任务数为<span>0</span></p>
+		<button type="button" id="takeTask" disabled><i class="sa-icon sa-icon-cloud-download"></i> 接收任务</button>
+		<button type="submit" id="start" disabled><i class="sa-icon sa-icon-play"></i> 执行任务</button>
+	</form>
+</div>
+<script src="js/jClass.js"></script>
 <script src="js/popup.js"></script>
 </body>
 </html>
