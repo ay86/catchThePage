@@ -151,6 +151,10 @@ function fEnd() {
 	// 接收与 content script 通信
 	chrome.runtime.onMessage.addListener(function (oMessage, oSender, fCb) {
 		var oData = oMessage;
+		var aView = chrome.extension.getViews({type: 'popup'});
+		if (aView.length) {
+			aView[0].fUpdateTaskTotal(TASK_LIST.length);
+		}
 		if (oData.robot) {
 			var nRetry = parseInt(LOCAL_STORAGE.getItem('catch.set.retry'), 10);
 			ROBOT_RESET = true;
@@ -177,7 +181,7 @@ function fEnd() {
 			url       : sPostURL,
 			data      : oData,
 			dataType  : 'json',
-			retryCount: 3,
+			retryCount: 2,
 			success   : function (jRes) {
 				jRes.error && console.warn(jRes.errorText, '-', jRes.source);
 				SUCCESS_TOTAL++;
@@ -186,6 +190,7 @@ function fEnd() {
 				fTogglePage();
 			},
 			error     : function (e) {
+				this.retry();
 				fSendMessage({console: true, error: e});
 			}
 		});

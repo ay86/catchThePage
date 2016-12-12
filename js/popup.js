@@ -14,6 +14,13 @@ $(function () {
 	var $RetryTime = $('#retryTime');
 	var $TakeTask = $('#takeTask');
 
+	window.fUpdateTaskTotal = function (nTotal) {
+		if (nTotal == 0) {
+			$TakeTask.removeClass('btn-success').removeAttr('disabled').find('span').text('接收任务');
+		}
+		$('#taskInfo').removeClass('hidden').find('span').html(nTotal.toString());
+	};
+
 	function fCheckRequire() {
 		if ($RemoteUrl.val() && $('#taskInfo').hasClass('hidden')) {
 			$('#takeTask').removeAttr('disabled');
@@ -34,16 +41,6 @@ $(function () {
 	$SubmitUrl.val(oLocalStorage.getItem('catch.set.submit'));
 	$RetryTime.val(oLocalStorage.getItem('catch.set.retry'));
 
-	fCheckRequire();
-
-	//	显示已存在的任务
-	var sTasks = bg.fGetTask();
-	if (sTasks.length) {
-		$('#notTask').addClass('hidden');
-		$('#taskInfo').removeClass('hidden').find('span').html(sTasks.split(',').length);
-		$TakeTask.addClass('btn-success').attr('disabled', true).find('span').text('已接收');
-	}
-
 	$RemoteUrl.on('change', function () {
 		oLocalStorage.setItem('catch.set.remote', $(this).val());
 		fCheckRequire();
@@ -62,6 +59,16 @@ $(function () {
 		oLocalStorage.setItem('catch.set.retry', $(this).val());
 	});
 
+	fCheckRequire();
+
+	//	显示已存在的任务
+	var sTasks = bg.fGetTask();
+	if (sTasks.length) {
+		$('#notTask').addClass('hidden');
+		fUpdateTaskTotal(sTasks.split(',').length);
+		$TakeTask.addClass('btn-success').attr('disabled', true).find('span').text('已接收');
+	}
+
 	// 接收任务
 	$TakeTask.on('click', function () {
 		var $This = $(this);
@@ -77,7 +84,7 @@ $(function () {
 				bg.fSetTask(jRes);
 				if (_.size(jRes)) {
 					$('#notTask').addClass('hidden');
-					$('#taskInfo').removeClass('hidden').find('span').html(_.size(jRes));
+					fUpdateTaskTotal(_.size(jRes));
 				}
 				$This.addClass('btn-success').attr('disabled', true).find('span').text('已接收');
 			},

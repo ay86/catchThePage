@@ -1,7 +1,7 @@
 {
   // 必须的字段
   "name": "Content Catcher",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "manifest_version": 2,
   // 建议提供的字段
   "description": "内容采集器，通过设置抓取规则采集所需数据。支持远程同步任务，远程提交，远程同步规则。",
