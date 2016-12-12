@@ -1,10 +1,10 @@
 {
   // 必须的字段
   "name": "Content Catcher",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "manifest_version": 2,
   // 建议提供的字段
-  "description": "Catch the web page document post to any url.",
+  "description": "内容采集器，通过设置抓取规则采集所需数据。支持远程同步任务，远程提交，远程同步规则。",
   "icons": {
     "16": "images/icon.png",
     "48": "images/icon.png",
@@ -18,14 +18,14 @@
     "default_title": "Content Catcher",
     "default_popup": "set.html"
   },
-  //  "page_action": {},
   //  "theme": {},
   //  "app": {},
   // 根据需要提供
   "background": {
     "scripts": [
-      "js/jquery.js",
-      "js/background.js"
+      "js/jClass.js",
+      "js/underscore-min.js",
+      "js/catchCore.js"
     ]
   },
   //  "chrome_url_overrides": {},
@@ -35,8 +35,8 @@
         "http://*/*"
       ],
       "js": [
-        "js/jquery.js",
-        "js/catch.js"
+        "js/jClass.js",
+        "js/getting.js"
       ]
     }
   ],
@@ -48,7 +48,7 @@
   //  "key": "publicKey",
   //  "minimum_chrome_version": "versionString",
   //  "nacl_modules": [],
-  "offline_enabled": true,
+  "offline_enabled": false,
   //  "omnibox": {
   //    "keyword": "aString"
   //  },

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>选项设置</title>
-	<link rel="stylesheet" href="http://static.omooer.com/saui/css/sa.min.css">
+	<link rel="stylesheet" href="css/sa.min.css">
 	<style type="text/css">
 		#syncUrl {
 			width: 93.9%;
@@ -17,6 +17,7 @@
 <body>
 <div class="grid">
 	<div class="col-offset-3 col-md-offset-2 col-6 col-md-8">
+		<h1><img src="images/icon.png"> Content Catcher</h1>
 		<form class="form form-stacked">
 			<label>
 				<input type="radio" name="type" value="manual"> 手动输入
@@ -26,14 +27,15 @@
 			</label>
 			<div id="manual" class="tab-opt">
 				<div class="form-group">
-					<label for="rule">规则</label>
+					<label for="rule">手动规则</label>
 					<textarea id="rule" name="rule" rows="20" class="form-control"></textarea>
-					<p class="text-info">抓取规则由“键值:抓取元素”组成，如：title:#title-class ，每一条规则独立一行</p>
+					<p class="text-info">抓取规则由“键值:抓取元素”组成，如：title:#title-class ，每一条规则独立一行<br>
+					手动规则对所有 url 生效</p>
 				</div>
 			</div>
 			<div id="sync" class="tab-opt">
 				<div class="form-group">
-					<label for="syncUrl">同步地址</label>
+					<label for="syncUrl">规则同步地址</label>
 					<div class="input-group col-12">
 						<input type="url" id="syncUrl" name="syncUrl" class="form-control">
 						<button type="button" id="getSync" title="点击同步"><i class="sa-icon sa-icon-refresh"></i></button>
@@ -41,7 +43,7 @@
 					<p class="text-info">最近同步时间：<span id="syncDate">2016-12-12 00:00:00</span></p>
 				</div>
 				<div class="form-group">
-					<label for="syncResult">同步结果</label>
+					<label for="syncResult">规则同步结果</label>
 					<textarea id="syncResult" name="syncResult" rows="20" readonly class="form-control"></textarea>
 				</div>
 			</div>

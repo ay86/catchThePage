@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Setting</title>
-	<link rel="stylesheet" href="http://static.omooer.com/saui/css/sa.min.css">
+	<link rel="stylesheet" href="css/sa.min.css">
 	<style type="text/css">
 		body {
 			padding: 1.5em 0;
@@ -16,22 +16,23 @@
 	<form name="setting" class="form form-stacked col-10 col-offset-1">
 		<div class="form-group">
 			<label>远程任务地址</label>
-			<input type="url" id="remoteUrl" placeholder="输入远程任务地址" class="form-control">
+			<input type="url" id="remoteUrl" placeholder="远程任务地址为空时无法获取远程分配的任务列表" class="form-control">
 		</div>
-		<p class="text-info"><i class="sa-icon sa-icon-exclamation-circle"></i> 远程任务地址为空时执行任务将只对当前页面单次生效</p>
 		<div class="form-group">
-			<label>任务中断等待时间（分）</label>
-			<input type="number" id="retryTime" placeholder="" class="col-2">
+			<label>任务中断等待重试时间（分）</label>
+			<input type="number" id="retryTime" placeholder="" title="为 0 时不重试，将跳过中断的 url" class="col-2">
 		</div>
 		<div class="form-group">
 			<label>数据提交地址</label>
 			<input type="url" id="submitUrl" placeholder="输入数据提交地址，不能为空" class="form-control">
 		</div>
-		<p id="taskInfo" class="text-success hidden">任务接收完毕，当前任务数为<span>0</span></p>
-		<button type="button" id="takeTask" disabled><i class="sa-icon sa-icon-cloud-download"></i> 接收任务</button>
+		<p id="notTask" class="text-info"><i class="sa-icon sa-icon-exclamation-circle"></i> 没有接收到任务列表时执行任务将只对当前页面单次生效</p>
+		<p id="taskInfo" class="text-success hidden"><i class="sa-icon sa-icon-check"></i> 任务接收完毕，当前任务数为<span>0</span></p>
+		<button type="button" id="takeTask" disabled><i class="sa-icon sa-icon-cloud-download"></i> <span>接收任务</span></button>
 		<button type="submit" id="start" disabled><i class="sa-icon sa-icon-play"></i> 执行任务</button>
 	</form>
 </div>
+<script src="js/underscore-min.js"></script>
 <script src="js/jClass.js"></script>
 <script src="js/popup.js"></script>
 </body>

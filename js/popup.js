@@ -12,9 +12,10 @@ $(function () {
 	var $RemoteUrl = $('#remoteUrl');
 	var $SubmitUrl = $('#submitUrl');
 	var $RetryTime = $('#retryTime');
+	var $TakeTask = $('#takeTask');
 
 	function fCheckRequire() {
-		if ($RemoteUrl.val()) {
+		if ($RemoteUrl.val() && $('#taskInfo').hasClass('hidden')) {
 			$('#takeTask').removeAttr('disabled');
 		}
 		else {
@@ -38,7 +39,9 @@ $(function () {
 	//	显示已存在的任务
 	var sTasks = bg.fGetTask();
 	if (sTasks.length) {
+		$('#notTask').addClass('hidden');
 		$('#taskInfo').removeClass('hidden').find('span').html(sTasks.split(',').length);
+		$TakeTask.addClass('btn-success').attr('disabled', true).find('span').text('已接收');
 	}
 
 	$RemoteUrl.on('change', function () {
@@ -60,7 +63,9 @@ $(function () {
 	});
 
 	// 接收任务
-	$('#takeTask').on('click', function () {
+	$TakeTask.on('click', function () {
+		var $This = $(this);
+		$This.removeClass('btn-danger');
 		$.ajax({
 			url     : $RemoteUrl.val(),
 			cache   : false,
@@ -70,11 +75,14 @@ $(function () {
 					jRes = JSON.parse(jRes.source);
 				}
 				bg.fSetTask(jRes);
-				$('#taskInfo').removeClass('hidden').find('span').html(jRes.length);
-				$(this).addClass('btn-success');
+				if (_.size(jRes)) {
+					$('#notTask').addClass('hidden');
+					$('#taskInfo').removeClass('hidden').find('span').html(_.size(jRes));
+				}
+				$This.addClass('btn-success').attr('disabled', true).find('span').text('已接收');
 			},
 			error   : function () {
-				$(this).addClass('btn-error');
+				$This.addClass('btn-danger').find('span').text('点击重试');
 			}
 		});
 	});
